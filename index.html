@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Daheim</title>
+<meta name="theme-color" content="#f3ead9" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Daheim" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- LISTE -->
+  <div id="view-liste">
+    <header class="top">
+      <button class="settings-btn" id="settings-btn" aria-label="Einstellungen">⚙️</button>
+      <div class="icon">📖</div>
+      <h1 class="title">Unser Kochbuch</h1>
+      <p class="subtitle" id="subtitle">0 Rezepte gesammelt</p>
+    </header>
+
+    <div id="alert-area"></div>
+
+    <div class="search-wrap">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="search-input" placeholder="Rezept, Zutat oder Notiz suchen..." />
+    </div>
+
+    <div class="chips">
+      <button class="chip" id="chip-veg" data-active="false">🌿 Vegetarisch</button>
+      <button class="chip-reset hidden" id="chip-reset">Filter zurücksetzen</button>
+    </div>
+
+    <div class="sort-chips" id="sort-chips">
+      <button class="sort-chip" data-sort="alphabetisch">A–Z</button>
+      <button class="sort-chip" data-sort="kochzeit">⏱ Kochzeit</button>
+      <button class="sort-chip" data-sort="favoriten">❤️ Favoriten</button>
+    </div>
+
+    <div class="cat-grid" id="cat-grid"></div>
+
+    <div class="back-row hidden" id="back-row">
+      <button class="back-btn" id="back-to-categories">‹ Alle Kategorien</button>
+      <span class="active-cat-label" id="active-cat-label"></span>
+    </div>
+
+    <div id="recipe-list"></div>
+
+    <button class="fab" id="fab-add" aria-label="Neues Rezept hinzufügen">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+  </div>
+
+  <!-- DETAIL -->
+  <div id="view-detail" class="hidden"></div>
+
+  <!-- FORMULAR -->
+  <div id="view-formular" class="hidden"></div>
+
+  <!-- EINKAUFSLISTE -->
+  <div id="view-einkauf" class="hidden">
+    <header class="top">
+      <button class="settings-btn" id="shop-settings-btn" aria-label="Kategorien verwalten">⚙️</button>
+      <div class="icon">🛒</div>
+      <h1 class="title">Einkaufsliste</h1>
+      <p class="subtitle" id="shop-subtitle">0 Dinge zu kaufen</p>
+    </header>
+
+    <div id="shop-alert-area"></div>
+
+    <div class="shop-add-row">
+      <input type="text" id="shop-name-input" placeholder="z. B. Tomaten" />
+    </div>
+    <div class="shop-add-row">
+      <input type="text" id="shop-menge-input" placeholder="Menge (z. B. 500g)" style="flex: 0 0 130px;" />
+      <select id="shop-kategorie-input"></select>
+    </div>
+    <div class="shop-add-row">
+      <input type="text" id="shop-notiz-input" placeholder="Notiz (optional, z. B. Bio)" />
+      <button id="shop-add-btn">+ Hinzufügen</button>
+    </div>
+
+    <div id="shop-suggestions" class="hidden"></div>
+
+    <div id="shop-list"></div>
+
+    <button class="shop-clear-done hidden" id="shop-clear-done-btn">Erledigte Punkte entfernen</button>
+  </div>
+
+  <!-- WOCHENPLAN -->
+  <div id="view-wochenplan" class="hidden">
+    <header class="top">
+      <div class="icon">📅</div>
+      <h1 class="title">Wochenplan</h1>
+      <p class="subtitle" id="week-subtitle"></p>
+    </header>
+
+    <div id="week-alert-area"></div>
+
+    <div class="week-nav">
+      <button id="week-prev-btn" aria-label="Vorherige Woche">‹</button>
+      <button id="week-today-btn">Diese Woche</button>
+      <button id="week-next-btn" aria-label="Nächste Woche">›</button>
+    </div>
+
+    <div id="week-days"></div>
+
+    <button class="week-generate-list-btn" id="week-generate-list-btn">🛒 Einkaufsliste aus Wochenplan erstellen</button>
+  </div>
+
+  <!-- TODOS -->
+  <div id="view-todos" class="hidden">
+    <header class="top">
+      <button class="settings-btn" id="todo-settings-btn" aria-label="Kategorien verwalten">⚙️</button>
+      <div class="icon">✅</div>
+      <h1 class="title">Todos</h1>
+      <p class="subtitle" id="todo-subtitle"></p>
+    </header>
+
+    <div id="todo-alert-area"></div>
+
+    <div class="todo-filter-chips" id="todo-filter-chips"></div>
+
+    <div id="todo-list"></div>
+
+    <button class="fab" id="todo-fab-add" aria-label="Neues Todo hinzufügen">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+  </div>
+
+</div>
+
+<nav class="tab-bar">
+  <button class="tab-btn active" id="tab-kochbuch" data-tab="kochbuch">
+    <span class="tab-icon">📖</span> Kochbuch
+  </button>
+  <button class="tab-btn" id="tab-wochenplan" data-tab="wochenplan">
+    <span class="tab-icon">📅</span> Plan
+  </button>
+  <button class="tab-btn" id="tab-einkauf" data-tab="einkauf">
+    <span class="tab-icon">🛒</span> Einkauf
+  </button>
+  <button class="tab-btn" id="tab-todos" data-tab="todos">
+    <span class="tab-icon">✅</span> Todos
+  </button>
+</nav>
+
+<div id="modal-area"></div>
+<div id="lightbox-area"></div>
+<div id="shop-edit-area"></div>
+<div id="week-edit-area"></div>
+<div id="todo-edit-area"></div>
+
+<!-- Firebase-Verbindung (Modul, lädt asynchron) -->
+<script type="module" src="js/firebase-config.js"></script>
+
+<!-- App-Module (normale Scripts, in Reihenfolge der Abhängigkeit) -->
+<script src="js/db.js"></script>
+<script src="js/backup.js"></script>
+<script src="js/dragdrop.js"></script>
+<script src="js/kochbuch.js"></script>
+<script src="js/einkauf.js"></script>
+<script src="js/wochenplan.js"></script>
+<script src="js/todos.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
